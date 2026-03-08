@@ -687,7 +687,7 @@
     <span class="header-emoji">🍽️</span>
     <div class="blog-name">sachisagashi.com</div>
     <h1>お店メモ</h1>
-    <p class="header-sub">さちさがし｜グルメレビューメモ帳</p>
+    <p class="header-sub">さがし｜グルメレビューメモ帳</p>
   </div>
 
   <!-- 📍 基本情報 -->
@@ -860,7 +860,7 @@
         <textarea id="summary" placeholder="例：コスパ最強！ランチタイムは特におすすめ🙌"></textarea>
       </div>
       <div class="sachi-field">
-        <label>✨ 今回の『さち』</label>
+        <label>✨ 今回の『』</label>
         <textarea id="sachi" placeholder="今回の幸せポイントを書いてみよう！例：お通しの小鉢が全部美味しくてすでに幸せだった🥹"></textarea>
       </div>
     </div>
@@ -1028,7 +1028,7 @@
     if (total) properties['合計金額'] = { number: total };
     if (stars) properties['評価'] = { number: stars };
     if (summary) properties['一言まとめ'] = { rich_text: [{ text: { content: summary } }] };
-    if (sachi) properties["さち"] = { rich_text: [{ text: { content: sachi } }] };
+    if (sachi) properties["今回の『さち』"] = { rich_text: [{ text: { content: sachi } }] };
     properties['ステータス'] = { select: { name: 'メモ済' } };
 
     // 本文ブロック
