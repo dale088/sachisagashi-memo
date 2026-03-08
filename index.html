@@ -1086,7 +1086,7 @@
     if (total) properties['合計金額'] = { number: total };
     if (stars) properties['評価'] = { number: stars };
     if (summary) properties['一言まとめ'] = { rich_text: [{ text: { content: summary } }] };
-    if (sachi) properties["さち"] = { rich_text: [{ text: { content: sachi } }] };
+    if (sachi) properties["今回の『さち』"] = { rich_text: [{ text: { content: sachi } }] };
     properties['ステータス'] = { select: { name: 'メモ済' } };
 
     // 本文ブロック
