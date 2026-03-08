@@ -1033,21 +1033,16 @@
     properties['ステータス'] = { select: { name: 'メモ済' } };
 
     // 本文ブロック
-    let children_extra;
-    if (mapUrl) {
-      children_extra = [{
-        object: 'block',
-        type: 'paragraph',
-        paragraph: {
-          rich_text: [
-            { type: 'text', text: { content: '🗺️ Googleマップ：' } },
-            { type: 'text', text: { content: mapUrl, link: { url: mapUrl } } }
-          ]
-        }
-      }];
-    } else {
-      children_extra = [];
-    }
+    const children_extra = mapUrl ? [{
+      object: 'block',
+      type: 'paragraph',
+      paragraph: {
+        rich_text: [
+          { type: 'text', text: { content: '🗺️ Googleマップ：' } },
+          { type: 'text', text: { content: mapUrl, link: { url: mapUrl } } }
+        ]
+      }
+    }] : [];
     object: 'block',
     type: 'paragraph',
     paragraph: {
