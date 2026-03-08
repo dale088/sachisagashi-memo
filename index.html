@@ -1023,6 +1023,7 @@
       '名前': { title: [{ text: { content: shopName } }] },
     };
 
+    if (area) properties['エリア'] = { rich_text: [{ text: { content: area } }] };
     if (mapUrl) properties['Google Map'] = { url: mapUrl };
     if (visitDate) properties['訪問日'] = { date: { start: visitDate.slice(0, 10) } };
     if (total) properties['合計金額'] = { number: total };
