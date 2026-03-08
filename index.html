@@ -34,13 +34,11 @@
     overflow-x: hidden;
   }
 
-  /* 和紙テクスチャ背景 */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image:
-      url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 0;
   }
@@ -53,7 +51,6 @@
     z-index: 1;
   }
 
-  /* ヘッダー */
   .header {
     text-align: center;
     margin-bottom: 40px;
@@ -108,7 +105,6 @@
     letter-spacing: 0.1em;
   }
 
-  /* セクション共通 */
   .section {
     background: var(--warm-white);
     border-radius: 14px;
@@ -133,9 +129,7 @@
     user-select: none;
   }
 
-  .section-icon {
-    font-size: 1.1rem;
-  }
+  .section-icon { font-size: 1.1rem; }
 
   .section-title {
     font-family: 'Noto Serif JP', serif;
@@ -152,9 +146,7 @@
     transition: transform 0.25s ease;
   }
 
-  .section.collapsed .section-toggle {
-    transform: rotate(-90deg);
-  }
+  .section.collapsed .section-toggle { transform: rotate(-90deg); }
 
   .section-body {
     padding: 18px 20px;
@@ -171,7 +163,6 @@
     padding-bottom: 0;
   }
 
-  /* フォームフィールド */
   .field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -179,15 +170,9 @@
     margin-bottom: 12px;
   }
 
-  .field-row.single {
-    grid-template-columns: 1fr;
-  }
+  .field-row.single { grid-template-columns: 1fr; }
 
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+  .field { display: flex; flex-direction: column; gap: 5px; }
 
   .field label {
     font-size: 0.72rem;
@@ -220,22 +205,11 @@
   }
 
   .field input::placeholder,
-  .field textarea::placeholder {
-    color: #c4b6a8;
-  }
+  .field textarea::placeholder { color: #c4b6a8; }
 
-  .field textarea {
-    resize: vertical;
-    min-height: 80px;
-    line-height: 1.7;
-  }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.7; }
 
-  /* 料理メモ */
-  .dish-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .dish-list { display: flex; flex-direction: column; gap: 10px; }
 
   .dish-item {
     display: grid;
@@ -249,9 +223,7 @@
     transition: border-color 0.2s;
   }
 
-  .dish-item:focus-within {
-    border-color: var(--tea);
-  }
+  .dish-item:focus-within { border-color: var(--tea); }
 
   .dish-item input {
     background: transparent;
@@ -265,16 +237,9 @@
     transition: border-color 0.2s;
   }
 
-  .dish-item input:focus {
-    border-color: var(--tea);
-    background: transparent;
-  }
-
+  .dish-item input:focus { border-color: var(--tea); background: transparent; }
   .dish-item input::placeholder { color: #c4b6a8; }
-
-  .dish-item .price-input {
-    text-align: right;
-  }
+  .dish-item .price-input { text-align: right; }
 
   .dish-remove {
     background: none;
@@ -297,11 +262,7 @@
     padding: 0 12px 4px;
   }
 
-  .dish-labels span {
-    font-size: 0.68rem;
-    color: var(--smoke);
-    letter-spacing: 0.06em;
-  }
+  .dish-labels span { font-size: 0.68rem; color: var(--smoke); letter-spacing: 0.06em; }
 
   .add-dish-btn {
     display: flex;
@@ -327,12 +288,7 @@
     background: rgba(200, 169, 126, 0.06);
   }
 
-  /* ラジオ・チェック */
-  .radio-group, .checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .radio-group, .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
 
   .radio-group label, .checkbox-group label {
     display: flex;
@@ -349,14 +305,7 @@
     letter-spacing: 0.05em;
   }
 
-  .radio-group input, .checkbox-group input {
-    display: none;
-  }
-
-  .radio-group input:checked + span,
-  .checkbox-group input:checked + span {
-    /* handled by parent label */
-  }
+  .radio-group input, .checkbox-group input { display: none; }
 
   .radio-group label:has(input:checked),
   .checkbox-group label:has(input:checked) {
@@ -365,14 +314,7 @@
     color: white;
   }
 
-  /* 星評価 */
-  .star-rating {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    gap: 4px;
-  }
-
+  .star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
   .star-rating input { display: none; }
 
   .star-rating label {
@@ -385,15 +327,10 @@
 
   .star-rating label:hover,
   .star-rating label:hover ~ label,
-  .star-rating input:checked ~ label {
-    color: var(--gold);
-  }
+  .star-rating input:checked ~ label { color: var(--gold); }
 
-  .star-rating label:hover {
-    transform: scale(1.2);
-  }
+  .star-rating label:hover { transform: scale(1.2); }
 
-  /* 総評テキスト */
   .sachi-field {
     background: linear-gradient(135deg, rgba(200,169,126,0.12), rgba(125,158,122,0.08));
     border: 1.5px solid var(--tea);
@@ -424,19 +361,9 @@
     line-height: 1.75;
   }
 
-  .sachi-field textarea:focus {
-    outline: none;
-    border-color: var(--tea);
-    background: transparent;
-  }
+  .sachi-field textarea:focus { outline: none; border-color: var(--tea); background: transparent; }
 
-  /* ボタン */
-  .action-bar {
-    display: flex;
-    gap: 10px;
-    margin-top: 28px;
-    flex-wrap: wrap;
-  }
+  .action-bar { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
 
   .btn {
     display: flex;
@@ -453,38 +380,12 @@
     transition: all 0.2s;
   }
 
-  .btn-primary {
-    background: var(--ink);
-    color: var(--cream);
-    flex: 1;
-    justify-content: center;
-  }
+  .btn-primary { background: var(--ink); color: var(--cream); flex: 1; justify-content: center; }
+  .btn-primary:hover { background: #3d3228; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(44, 35, 24, 0.2); }
+  .btn-primary:disabled { background: var(--smoke); cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary { background: var(--cream); color: var(--smoke); border: 1.5px solid var(--pale-tea); }
+  .btn-secondary:hover { border-color: var(--smoke); color: var(--ink); }
 
-  .btn-primary:hover {
-    background: #3d3228;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(44, 35, 24, 0.2);
-  }
-
-  .btn-primary:disabled {
-    background: var(--smoke);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .btn-secondary {
-    background: var(--cream);
-    color: var(--smoke);
-    border: 1.5px solid var(--pale-tea);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--smoke);
-    color: var(--ink);
-  }
-
-  /* トースト */
   .toast {
     position: fixed;
     bottom: 28px;
@@ -505,7 +406,6 @@
   .toast.success { background: var(--matcha); }
   .toast.error { background: var(--rust); }
 
-  /* モーダル共通 */
   .modal {
     position: fixed;
     inset: 0;
@@ -544,24 +444,9 @@
     border-bottom: 1px solid var(--pale-tea);
   }
 
-  .modal-title {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .modal-close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--smoke);
-    padding: 2px 6px;
-  }
-
-  .modal-body {
-    padding: 20px;
-  }
+  .modal-title { font-family: 'Noto Serif JP', serif; font-size: 0.9rem; font-weight: 600; }
+  .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--smoke); padding: 2px 6px; }
+  .modal-body { padding: 20px; }
 
   .modal-actions {
     padding: 14px 20px;
@@ -570,60 +455,6 @@
     gap: 10px;
   }
 
-  /* APIトークン設定 */
-  .token-section {
-    background: var(--warm-white);
-    border-radius: 14px;
-    border: 1.5px solid var(--pale-tea);
-    margin-bottom: 18px;
-    overflow: hidden;
-  }
-
-  .token-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.78rem;
-    color: var(--smoke);
-    margin-top: 8px;
-  }
-
-  .token-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--pale-tea);
-    flex-shrink: 0;
-  }
-
-  .token-dot.set { background: var(--matcha); }
-
-  .token-input-wrap {
-    position: relative;
-    display: flex;
-    gap: 8px;
-  }
-
-  .token-input-wrap input {
-    flex: 1;
-  }
-
-  .token-save-btn {
-    background: var(--tea);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 14px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    font-family: 'Noto Sans JP', sans-serif;
-    white-space: nowrap;
-    transition: background 0.2s;
-  }
-
-  .token-save-btn:hover { background: var(--gold); }
-
-  /* 送信ローダー */
   .sending-overlay {
     position: fixed;
     inset: 0;
@@ -657,18 +488,12 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .sending-text {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 0.9rem;
-    color: var(--ink);
-  }
+  .sending-text { font-family: 'Noto Serif JP', serif; font-size: 0.9rem; color: var(--ink); }
 
-  /* スクロールバー */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--pale-tea); border-radius: 99px; }
 
-  /* レスポンシブ */
   @media (max-width: 480px) {
     .field-row { grid-template-columns: 1fr; }
     .dish-item { grid-template-columns: 1fr 72px; grid-template-rows: auto auto; }
@@ -682,15 +507,13 @@
 
 <div class="page-wrap">
 
-  <!-- ヘッダー -->
   <div class="header">
     <span class="header-emoji">🍽️</span>
     <div class="blog-name">sachisagashi.com</div>
     <h1>お店メモ</h1>
-    <p class="header-sub">さがし｜グルメレビューメモ帳</p>
+    <p class="header-sub">さちさがし｜グルメレビューメモ帳</p>
   </div>
 
-  <!-- 📍 基本情報 -->
   <div class="section" id="sec-basic">
     <div class="section-header" onclick="toggleSection('sec-basic')">
       <span class="section-icon">📍</span>
@@ -737,7 +560,6 @@
     </div>
   </div>
 
-  <!-- 🍴 料理メモ -->
   <div class="section" id="sec-food">
     <div class="section-header" onclick="toggleSection('sec-food')">
       <span class="section-icon">🍴</span>
@@ -752,13 +574,10 @@
         <span></span>
       </div>
       <div class="dish-list" id="dish-list"></div>
-      <button class="add-dish-btn" onclick="addDish()">
-        ＋ 料理を追加
-      </button>
+      <button class="add-dish-btn" onclick="addDish()">＋ 料理を追加</button>
     </div>
   </div>
 
-  <!-- 🏮 雰囲気メモ -->
   <div class="section" id="sec-vibe">
     <div class="section-header" onclick="toggleSection('sec-vibe')">
       <span class="section-icon">🏮</span>
@@ -793,7 +612,7 @@
             <label><input type="radio" name="crowd" value="すいてた"><span>すいてた</span></label>
             <label><input type="radio" name="crowd" value="ほどほど"><span>ほどほど</span></label>
             <label><input type="radio" name="crowd" value="混んでた"><span>混んでた</span></label>
-            <label><input type="radio" name="crowd" value="満席" checked><span>満席だった</span></label>
+            <label><input type="radio" name="crowd" value="満席"><span>満席だった</span></label>
           </div>
         </div>
         <div class="field">
@@ -810,7 +629,6 @@
     </div>
   </div>
 
-  <!-- 💰 お会計 -->
   <div class="section" id="sec-bill">
     <div class="section-header" onclick="toggleSection('sec-bill')">
       <span class="section-icon">💰</span>
@@ -837,7 +655,6 @@
     </div>
   </div>
 
-  <!-- ⭐ 総評 -->
   <div class="section" id="sec-review">
     <div class="section-header" onclick="toggleSection('sec-review')">
       <span class="section-icon">⭐</span>
@@ -860,21 +677,19 @@
         <textarea id="summary" placeholder="例：コスパ最強！ランチタイムは特におすすめ🙌"></textarea>
       </div>
       <div class="sachi-field">
-        <label>✨ 今回の『』</label>
+        <label>✨ 今回の『さち』</label>
         <textarea id="sachi" placeholder="今回の幸せポイントを書いてみよう！例：お通しの小鉢が全部美味しくてすでに幸せだった🥹"></textarea>
       </div>
     </div>
   </div>
 
-  <!-- アクション -->
   <div class="action-bar">
     <button class="btn btn-secondary" onclick="resetForm()">🗑 リセット</button>
     <button class="btn btn-primary" id="save-btn" onclick="saveToNotion()">📬 Notionに保存する</button>
   </div>
 
-</div><!-- /page-wrap -->
+</div>
 
-<!-- 送信中オーバーレイ -->
 <div class="sending-overlay" id="sending-overlay">
   <div class="sending-box">
     <div class="sending-spinner"></div>
@@ -882,7 +697,6 @@
   </div>
 </div>
 
-<!-- 完了モーダル -->
 <div class="modal" id="success-modal">
   <div class="modal-box">
     <div class="modal-header">
@@ -893,7 +707,7 @@
       <div style="font-size:3rem; margin-bottom:12px;">🎉</div>
       <div style="font-family:'Noto Serif JP',serif; font-size:1rem; margin-bottom:8px;" id="success-shop-name"></div>
       <div style="font-size:0.82rem; color:var(--smoke);">Notionのデータベースに保存されました</div>
-      <a id="notion-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:6px; margin-top:18px; background:var(--ink); color:var(--cream); padding:10px 20px; border-radius:10px; font-size:0.83rem; text-decoration:none; font-family:'Noto Sans JP',sans-serif;">
+      <a id="notion-link" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:var(--ink);color:var(--cream);padding:10px 20px;border-radius:10px;font-size:0.83rem;text-decoration:none;font-family:'Noto Sans JP',sans-serif;">
         Notionで確認する →
       </a>
     </div>
@@ -903,126 +717,88 @@
   </div>
 </div>
 
-<!-- トースト -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // トークンはCloudflare Worker側で管理
-
-  // セクション折り畳み
   function toggleSection(id) {
-    const body = document.getElementById(id + '-body') || document.getElementById(id)?.querySelector('.section-body');
-    const toggle = document.getElementById(id + '-toggle') || document.querySelector(`#${id} .section-toggle`);
-    if (body) {
-      const isCollapsed = body.style.maxHeight === '0px';
-      body.style.maxHeight = isCollapsed ? '2000px' : '0px';
-      body.style.opacity = isCollapsed ? '1' : '0';
-      body.style.paddingTop = isCollapsed ? '' : '0';
-      body.style.paddingBottom = isCollapsed ? '' : '0';
-    }
-    document.getElementById(id)?.classList.toggle('collapsed');
+    var el = document.getElementById(id);
+    if (el) el.classList.toggle('collapsed');
   }
 
-  // 初期料理行
-  let dishCount = 0;
+  var dishCount = 0;
   function addDish() {
     dishCount++;
-    const id = `dish-${dishCount}`;
-    const item = document.createElement('div');
+    var id = 'dish-' + dishCount;
+    var item = document.createElement('div');
     item.className = 'dish-item';
     item.id = id;
-    item.innerHTML = `
-      <input type="text" placeholder="料理名" class="dish-name" />
-      <input type="number" placeholder="¥" class="dish-price price-input" />
-      <input type="text" placeholder="感想" class="dish-memo" />
-      <button class="dish-remove" onclick="removeDish('${id}')" title="削除">×</button>
-    `;
+    item.innerHTML =
+      '<input type="text" placeholder="料理名" class="dish-name" />' +
+      '<input type="number" placeholder="¥" class="dish-price price-input" />' +
+      '<input type="text" placeholder="感想" class="dish-memo" />' +
+      '<button class="dish-remove" onclick="removeDish(\'' + id + '\')" title="削除">×</button>';
     document.getElementById('dish-list').appendChild(item);
     item.querySelector('.dish-name').focus();
   }
 
   function removeDish(id) {
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     if (el) el.remove();
   }
 
   addDish(); addDish(); addDish();
 
-  // 1人あたり自動計算
   function calcPerPerson() {
-    const total = parseInt(document.getElementById('total-price').value) || 0;
-    const persons = parseInt(document.getElementById('persons').value) || 1;
+    var total = parseInt(document.getElementById('total-price').value) || 0;
+    var persons = parseInt(document.getElementById('persons').value) || 1;
     if (total > 0) {
-      const per = Math.round(total / persons);
-      document.getElementById('per-person').value = `¥${per.toLocaleString()}`;
+      document.getElementById('per-person').value = '¥' + Math.round(total / persons).toLocaleString();
     } else {
       document.getElementById('per-person').value = '';
     }
   }
 
   function getRadio(name) {
-    const el = document.querySelector(`input[name="${name}"]:checked`);
+    var el = document.querySelector('input[name="' + name + '"]:checked');
     return el ? el.value : '';
   }
 
   function getChecked(groupId) {
-    const checks = document.querySelectorAll(`#${groupId} input:checked`);
-    return [...checks].map(c => c.value).join('・');
+    var checks = document.querySelectorAll('#' + groupId + ' input:checked');
+    return Array.from(checks).map(function(c) { return c.value; }).join('・');
   }
 
-  // Notionに保存
   async function saveToNotion() {
-    const shopName = document.getElementById('shop-name').value.trim();
-    if (!shopName) {
-      showToast('⚠️ 店名を入力してください', 'error');
-      return;
-    }
+    var shopName = document.getElementById('shop-name').value.trim();
+    if (!shopName) { showToast('⚠️ 店名を入力してください', 'error'); return; }
 
-    const area = document.getElementById('area').value.trim();
-    const visitDate = document.getElementById('visit-date').value;
-    const mapUrl = document.getElementById('map-url').value.trim();
-    const reservation = getRadio('reservation');
-    const waitTime = document.getElementById('wait-time').value.trim();
-    const seats = getChecked('seat-types');
-    const timelimit = getRadio('timelimit');
-    const crowd = getRadio('crowd');
-    const scenes = getChecked('scene-types');
-    const total = parseInt(document.getElementById('total-price').value) || 0;
-    const starsEl = document.querySelector('input[name="stars"]:checked');
-    const stars = starsEl ? parseInt(starsEl.value) : 0;
-    const summary = document.getElementById('summary').value.trim();
-    const sachi = document.getElementById('sachi').value.trim();
+    var area = document.getElementById('area').value.trim();
+    var visitDate = document.getElementById('visit-date').value;
+    var mapUrl = document.getElementById('map-url').value.trim();
+    var reservation = getRadio('reservation');
+    var waitTime = document.getElementById('wait-time').value.trim();
+    var seats = getChecked('seat-types');
+    var timelimit = getRadio('timelimit');
+    var crowd = getRadio('crowd');
+    var scenes = getChecked('scene-types');
+    var total = parseInt(document.getElementById('total-price').value) || 0;
+    var starsEl = document.querySelector('input[name="stars"]:checked');
+    var stars = starsEl ? parseInt(starsEl.value) : 0;
+    var summary = document.getElementById('summary').value.trim();
+    var sachi = document.getElementById('sachi').value.trim();
 
-    // 料理メモをテキストで組み立て
-    const dishLines = [...document.querySelectorAll('.dish-item')].map(item => {
-      const name = item.querySelector('.dish-name').value;
-      const price = item.querySelector('.dish-price').value;
-      const memo = item.querySelector('.dish-memo').value;
+    var dishLines = Array.from(document.querySelectorAll('.dish-item')).map(function(item) {
+      var name = item.querySelector('.dish-name').value;
+      var price = item.querySelector('.dish-price').value;
+      var memo = item.querySelector('.dish-memo').value;
       if (!name) return null;
-      const priceStr = price ? `¥${parseInt(price).toLocaleString()}` : '';
-      return `・${name}${priceStr ? '　' + priceStr : ''}${memo ? '　→　' + memo : ''}`;
+      var priceStr = price ? '¥' + parseInt(price).toLocaleString() : '';
+      return '・' + name + (priceStr ? '　' + priceStr : '') + (memo ? '　→　' + memo : '');
     }).filter(Boolean);
 
-    // ページ本文（料理メモ＋雰囲気メモ）
-    const bodyText = [
-      '🍴 料理メモ',
-      ...dishLines,
-      '',
-      '🏮 雰囲気メモ',
-      seats ? `席の種類：${seats}` : '',
-      timelimit ? `時間制限：${timelimit}` : '',
-      crowd ? `混雑具合：${crowd}` : '',
-      scenes ? `おすすめシーン：${scenes}` : '',
-      reservation ? `予約：${reservation}` : '',
-      waitTime ? `待ち時間：${waitTime}` : '',
-      // mapUrl ? `\n🗺️ Googleマップ：${mapUrl}` : '',
-    ].filter(l => l !== null && l !== undefined);
-
-    // Notion APIペイロード
-    const properties = {
-      '名前': { title: [{ text: { content: shopName } }] },
+    var properties = {
+      '名前': { title: [{ text: { content: shopName } }] }
     };
-
     if (area) properties['エリア'] = { rich_text: [{ text: { content: area } }] };
     if (mapUrl) properties['Google Map'] = { url: mapUrl };
     if (visitDate) properties['訪問日'] = { date: { start: visitDate.slice(0, 10) } };
@@ -1032,98 +808,88 @@
     if (sachi) properties["今回の『さち』"] = { rich_text: [{ text: { content: sachi } }] };
     properties['ステータス'] = { select: { name: 'メモ済' } };
 
-    // 本文ブロック
-    const children_extra = mapUrl ? [{
-      object: 'block',
-      type: 'paragraph',
-      paragraph: {
-        rich_text: [
-          { type: 'text', text: { content: '🗺️ Googleマップ：' } },
-          { type: 'text', text: { content: mapUrl, link: { url: mapUrl } } }
-        ]
-      }
-    }] : [];
-    object: 'block',
-    type: 'paragraph',
-    paragraph: {
-      rich_text: [
-        { type: 'text', text: { content: '🗺️ Googleマップ：' } },
-        { type: 'text', text: { content: mapUrl, link: { url: mapUrl } } }
-      ]
+    var children = [];
+
+    // GoogleマップURLをクリッカブルリンクとして本文に追加
+    if (mapUrl) {
+      children.push({
+        object: 'block',
+        type: 'paragraph',
+        paragraph: {
+          rich_text: [
+            { type: 'text', text: { content: '🗺️ Googleマップ：' } },
+            { type: 'text', text: { content: mapUrl, link: { url: mapUrl } } }
+          ]
+        }
+      });
     }
-  }];
-} else {
-  children_extra = [];
-}
-    const children = bodyText
-      .filter(line => line.trim() !== '' || line === '')
-      .map(line => ({
+
+    // 料理・雰囲気メモを本文に追加
+    var bodyLines = ['🍴 料理メモ'].concat(dishLines).concat([
+      '', '🏮 雰囲気メモ',
+      seats ? '席の種類：' + seats : null,
+      timelimit ? '時間制限：' + timelimit : null,
+      crowd ? '混雑具合：' + crowd : null,
+      scenes ? 'おすすめシーン：' + scenes : null,
+      reservation ? '予約：' + reservation : null,
+      waitTime ? '待ち時間：' + waitTime : null
+    ]).filter(function(l) { return l !== null; });
+
+    bodyLines.forEach(function(line) {
+      children.push({
         object: 'block',
         type: 'paragraph',
         paragraph: {
           rich_text: line ? [{ type: 'text', text: { content: line } }] : []
         }
-      }));
+      });
+    });
 
-    const payload = {
-      properties,
-      // children: children.slice(0, 100)
-      children: [...children_extra, ...children].slice(0, 100)
-    };
+    var payload = { properties: properties, children: children.slice(0, 100) };
 
-    // 送信
     document.getElementById('sending-overlay').classList.add('show');
     document.getElementById('save-btn').disabled = true;
 
     try {
-      const res = await fetch('https://notion-proxy.dale-workspot.workers.dev/', {
+      var res = await fetch('https://notion-proxy.dale-workspot.workers.dev/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payload })
+        body: JSON.stringify({ payload: payload })
       });
-
-      const data = await res.json();
-
+      var data = await res.json();
       if (res.ok) {
         document.getElementById('sending-overlay').classList.remove('show');
-        document.getElementById('success-shop-name').textContent = `「${shopName}」を保存しました 🍽️`;
-        const pageUrl = data.url || 'https://notion.so';
-        document.getElementById('notion-link').href = pageUrl;
+        document.getElementById('success-shop-name').textContent = '「' + shopName + '」を保存しました 🍽️';
+        document.getElementById('notion-link').href = data.url || 'https://notion.so';
         document.getElementById('success-modal').classList.add('open');
       } else {
         throw new Error(data.message || 'APIエラー');
       }
     } catch (err) {
       document.getElementById('sending-overlay').classList.remove('show');
-      showToast(`❌ 保存失敗：${err.message}`, 'error');
+      showToast('❌ 保存失敗：' + err.message, 'error');
     } finally {
       document.getElementById('save-btn').disabled = false;
     }
   }
 
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('open');
-  }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function resetAndClose() { closeModal('success-modal'); resetForm(); }
 
-  function resetAndClose() {
-    closeModal('success-modal');
-    resetForm();
-  }
-
-  function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
     t.textContent = msg;
-    t.className = `toast ${type} show`;
-    setTimeout(() => t.classList.remove('show'), 3000);
+    t.className = 'toast ' + (type || 'success') + ' show';
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
   }
 
   function resetForm() {
     if (!confirm('入力内容をリセットしますか？')) return;
-    document.querySelectorAll('input[type="text"], input[type="number"], input[type="url"], input[type="datetime-local"], textarea').forEach(el => {
-      if (!el.readOnly && el.id !== 'notion-token') el.value = '';
+    document.querySelectorAll('input[type="text"], input[type="number"], input[type="url"], input[type="datetime-local"], textarea').forEach(function(el) {
+      if (!el.readOnly) el.value = '';
     });
     document.getElementById('per-person').value = '';
-    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function(el) { el.checked = false; });
     document.querySelector('input[name="reservation"][value="なし"]').checked = true;
     document.querySelector('input[name="timelimit"][value="なし"]').checked = true;
     document.getElementById('persons').value = 2;
@@ -1132,7 +898,6 @@
     addDish(); addDish(); addDish();
   }
 
-  // モーダル外クリックで閉じる
   document.getElementById('success-modal').addEventListener('click', function(e) {
     if (e.target === this) closeModal('success-modal');
   });
