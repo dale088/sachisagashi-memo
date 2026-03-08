@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>さちさがし｜お店メモ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&family=Kaisei+Decol:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #faf6f0;
+    --warm-white: #fff9f2;
+    --paper: #f5ede0;
+    --tea: #c8a97e;
+    --matcha: #7d9e7a;
+    --rust: #c4614a;
+    --ink: #2c2318;
+    --smoke: #7a6e64;
+    --pale-tea: #ede0cc;
+    --gold: #b8915a;
+    --shadow: rgba(44, 35, 24, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* 和紙テクスチャ背景 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ヘッダー */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 36px 24px 28px;
+    background: var(--warm-white);
+    border-radius: 16px;
+    border: 1.5px solid var(--pale-tea);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--tea), var(--matcha), var(--rust), var(--tea));
+  }
+
+  .header-emoji {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .blog-name {
+    font-family: 'Kaisei Decol', serif;
+    font-size: 1.05rem;
+    color: var(--tea);
+    letter-spacing: 0.2em;
+    margin-bottom: 4px;
+  }
+
+  .header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .header-sub {
+    font-size: 0.75rem;
+    color: var(--smoke);
+    letter-spacing: 0.1em;
+  }
+
+  /* セクション共通 */
+  .section {
+    background: var(--warm-white);
+    border-radius: 14px;
+    border: 1.5px solid var(--pale-tea);
+    margin-bottom: 18px;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease;
+  }
+
+  .section:focus-within {
+    box-shadow: 0 4px 24px var(--shadow), 0 0 0 2px var(--tea);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--pale-tea);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .section-icon {
+    font-size: 1.1rem;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    flex: 1;
+  }
+
+  .section-toggle {
+    color: var(--smoke);
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
+  }
+
+  .section.collapsed .section-toggle {
+    transform: rotate(-90deg);
+  }
+
+  .section-body {
+    padding: 18px 20px;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .section.collapsed .section-body {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* フォームフィールド */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .field-row.single {
+    grid-template-columns: 1fr;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .field label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--smoke);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    background: var(--cream);
+    border: 1.5px solid var(--pale-tea);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink);
+    transition: border-color 0.2s ease, background 0.2s ease;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--tea);
+    background: var(--warm-white);
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #c4b6a8;
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.7;
+  }
+
+  /* 料理メモ */
+  .dish-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dish-item {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--pale-tea);
+    transition: border-color 0.2s;
+  }
+
+  .dish-item:focus-within {
+    border-color: var(--tea);
+  }
+
+  .dish-item input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--pale-tea);
+    border-radius: 0;
+    padding: 4px 2px;
+    font-size: 0.83rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .dish-item input:focus {
+    border-color: var(--tea);
+    background: transparent;
+  }
+
+  .dish-item input::placeholder { color: #c4b6a8; }
+
+  .dish-item .price-input {
+    text-align: right;
+  }
+
+  .dish-remove {
+    background: none;
+    border: none;
+    color: #d4c4b8;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+
+  .dish-remove:hover { color: var(--rust); }
+
+  .dish-labels {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr auto;
+    gap: 8px;
+    padding: 0 12px 4px;
+  }
+
+  .dish-labels span {
+    font-size: 0.68rem;
+    color: var(--smoke);
+    letter-spacing: 0.06em;
+  }
+
+  .add-dish-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1.5px dashed var(--pale-tea);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.8rem;
+    color: var(--smoke);
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    margin-top: 6px;
+  }
+
+  .add-dish-btn:hover {
+    border-color: var(--tea);
+    color: var(--tea);
+    background: rgba(200, 169, 126, 0.06);
+  }
+
+  /* ラジオ・チェック */
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .radio-group label, .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cream);
+    border: 1.5px solid var(--pale-tea);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    color: var(--smoke);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .radio-group input, .checkbox-group input {
+    display: none;
+  }
+
+  .radio-group input:checked + span,
+  .checkbox-group input:checked + span {
+    /* handled by parent label */
+  }
+
+  .radio-group label:has(input:checked),
+  .checkbox-group label:has(input:checked) {
+    background: var(--tea);
+    border-color: var(--tea);
+    color: white;
+  }
+
+  /* 星評価 */
+  .star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+
+  .star-rating input { display: none; }
+
+  .star-rating label {
+    font-size: 1.8rem;
+    color: var(--pale-tea);
+    cursor: pointer;
+    transition: color 0.15s, transform 0.15s;
+    line-height: 1;
+  }
+
+  .star-rating label:hover,
+  .star-rating label:hover ~ label,
+  .star-rating input:checked ~ label {
+    color: var(--gold);
+  }
+
+  .star-rating label:hover {
+    transform: scale(1.2);
+  }
+
+  /* 総評テキスト */
+  .sachi-field {
+    background: linear-gradient(135deg, rgba(200,169,126,0.12), rgba(125,158,122,0.08));
+    border: 1.5px solid var(--tea);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .sachi-field label {
+    font-family: 'Kaisei Decol', serif;
+    font-size: 0.85rem;
+    color: var(--tea);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .sachi-field textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--pale-tea);
+    border-radius: 0;
+    padding: 4px 2px;
+    font-size: 0.88rem;
+    color: var(--ink);
+    width: 100%;
+    resize: none;
+    min-height: 56px;
+    line-height: 1.75;
+  }
+
+  .sachi-field textarea:focus {
+    outline: none;
+    border-color: var(--tea);
+    background: transparent;
+  }
+
+  /* ボタン */
+  .action-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--cream);
+    flex: 1;
+    justify-content: center;
+  }
+
+  .btn-primary:hover {
+    background: #3d3228;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(44, 35, 24, 0.2);
+  }
+
+  .btn-primary:disabled {
+    background: var(--smoke);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-secondary {
+    background: var(--cream);
+    color: var(--smoke);
+    border: 1.5px solid var(--pale-tea);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--smoke);
+    color: var(--ink);
+  }
+
+  /* トースト */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    color: var(--cream);
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--matcha); }
+  .toast.error { background: var(--rust); }
+
+  /* モーダル共通 */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 35, 24, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+
+  .modal.open { display: flex; }
+
+  .modal-box {
+    background: var(--warm-white);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 640px;
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--pale-tea);
+  }
+
+  .modal-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--smoke);
+    padding: 2px 6px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .modal-actions {
+    padding: 14px 20px;
+    border-top: 1px solid var(--pale-tea);
+    display: flex;
+    gap: 10px;
+  }
+
+  /* APIトークン設定 */
+  .token-section {
+    background: var(--warm-white);
+    border-radius: 14px;
+    border: 1.5px solid var(--pale-tea);
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+
+  .token-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--smoke);
+    margin-top: 8px;
+  }
+
+  .token-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pale-tea);
+    flex-shrink: 0;
+  }
+
+  .token-dot.set { background: var(--matcha); }
+
+  .token-input-wrap {
+    position: relative;
+    display: flex;
+    gap: 8px;
+  }
+
+  .token-input-wrap input {
+    flex: 1;
+  }
+
+  .token-save-btn {
+    background: var(--tea);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .token-save-btn:hover { background: var(--gold); }
+
+  /* 送信ローダー */
+  .sending-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 35, 24, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sending-overlay.show { display: flex; }
+
+  .sending-box {
+    background: var(--warm-white);
+    border-radius: 16px;
+    padding: 32px 40px;
+    text-align: center;
+    border: 1.5px solid var(--pale-tea);
+  }
+
+  .sending-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--pale-tea);
+    border-top-color: var(--tea);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 14px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .sending-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+
+  /* スクロールバー */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--pale-tea); border-radius: 99px; }
+
+  /* レスポンシブ */
+  @media (max-width: 480px) {
+    .field-row { grid-template-columns: 1fr; }
+    .dish-item { grid-template-columns: 1fr 72px; grid-template-rows: auto auto; }
+    .dish-item .dish-memo { grid-column: 1 / -1; }
+    .dish-item .dish-remove { grid-row: 1; grid-column: 2; justify-self: end; }
+    .dish-labels { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <span class="header-emoji">🍽️</span>
+    <div class="blog-name">sachisagashi.com</div>
+    <h1>お店メモ</h1>
+    <p class="header-sub">さちさがし｜グルメレビューメモ帳</p>
+  </div>
+
+  <!-- 📍 基本情報 -->
+  <div class="section" id="sec-basic">
+    <div class="section-header" onclick="toggleSection('sec-basic')">
+      <span class="section-icon">📍</span>
+      <span class="section-title">基本情報</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="field-row single">
+        <div class="field">
+          <label>店名</label>
+          <input type="text" id="shop-name" placeholder="例：焼鳥 さくら" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>エリア・最寄り駅</label>
+          <input type="text" id="area" placeholder="例：渋谷・恵比寿駅" />
+        </div>
+        <div class="field">
+          <label>訪問日時</label>
+          <input type="datetime-local" id="visit-date" />
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field">
+          <label>Google マップ URL</label>
+          <input type="url" id="map-url" placeholder="https://maps.google.com/..." />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>予約</label>
+          <div class="radio-group">
+            <label><input type="radio" name="reservation" value="あり"><span>あり</span></label>
+            <label><input type="radio" name="reservation" value="なし" checked><span>なし</span></label>
+            <label><input type="radio" name="reservation" value="電話のみ"><span>電話のみ</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>待ち時間</label>
+          <input type="text" id="wait-time" placeholder="例：15分待ち" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🍴 料理メモ -->
+  <div class="section" id="sec-food">
+    <div class="section-header" onclick="toggleSection('sec-food')">
+      <span class="section-icon">🍴</span>
+      <span class="section-title">料理メモ</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="dish-labels">
+        <span>料理名</span>
+        <span style="text-align:right">金額</span>
+        <span>感想</span>
+        <span></span>
+      </div>
+      <div class="dish-list" id="dish-list"></div>
+      <button class="add-dish-btn" onclick="addDish()">
+        ＋ 料理を追加
+      </button>
+    </div>
+  </div>
+
+  <!-- 🏮 雰囲気メモ -->
+  <div class="section" id="sec-vibe">
+    <div class="section-header" onclick="toggleSection('sec-vibe')">
+      <span class="section-icon">🏮</span>
+      <span class="section-title">雰囲気メモ</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="field-row">
+        <div class="field">
+          <label>席の種類</label>
+          <div class="checkbox-group" id="seat-types">
+            <label><input type="checkbox" value="カウンター"><span>カウンター</span></label>
+            <label><input type="checkbox" value="テーブル"><span>テーブル</span></label>
+            <label><input type="checkbox" value="座敷"><span>座敷</span></label>
+            <label><input type="checkbox" value="テラス"><span>テラス</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>時間制限</label>
+          <div class="radio-group">
+            <label><input type="radio" name="timelimit" value="なし" checked><span>なし</span></label>
+            <label><input type="radio" name="timelimit" value="90分"><span>90分</span></label>
+            <label><input type="radio" name="timelimit" value="120分"><span>120分</span></label>
+            <label><input type="radio" name="timelimit" value="あり"><span>あり</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>混雑具合</label>
+          <div class="radio-group">
+            <label><input type="radio" name="crowd" value="すいてた"><span>すいてた</span></label>
+            <label><input type="radio" name="crowd" value="ほどほど"><span>ほどほど</span></label>
+            <label><input type="radio" name="crowd" value="混んでた"><span>混んでた</span></label>
+            <label><input type="radio" name="crowd" value="満席" checked><span>満席だった</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>おすすめシーン</label>
+          <div class="checkbox-group" id="scene-types">
+            <label><input type="checkbox" value="デート"><span>💑 デート</span></label>
+            <label><input type="checkbox" value="友人"><span>👯 友人</span></label>
+            <label><input type="checkbox" value="一人"><span>🙋 一人</span></label>
+            <label><input type="checkbox" value="家族"><span>👨‍👩‍👧 家族</span></label>
+            <label><input type="checkbox" value="仕事"><span>💼 仕事</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 💰 お会計 -->
+  <div class="section" id="sec-bill">
+    <div class="section-header" onclick="toggleSection('sec-bill')">
+      <span class="section-icon">💰</span>
+      <span class="section-title">お会計</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="field-row">
+        <div class="field">
+          <label>合計金額</label>
+          <input type="number" id="total-price" placeholder="例：4800" oninput="calcPerPerson()" />
+        </div>
+        <div class="field">
+          <label>人数</label>
+          <input type="number" id="persons" placeholder="例：2" min="1" value="2" oninput="calcPerPerson()" />
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field">
+          <label>1人あたり目安</label>
+          <input type="text" id="per-person" placeholder="人数と合計を入力すると自動計算" readonly style="background: var(--paper); color: var(--smoke);" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⭐ 総評 -->
+  <div class="section" id="sec-review">
+    <div class="section-header" onclick="toggleSection('sec-review')">
+      <span class="section-icon">⭐</span>
+      <span class="section-title">総評</span>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="field" style="margin-bottom: 16px;">
+        <label>また行きたいか</label>
+        <div class="star-rating">
+          <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
+          <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
+          <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
+          <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
+          <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom: 16px;">
+        <label>一言まとめ</label>
+        <textarea id="summary" placeholder="例：コスパ最強！ランチタイムは特におすすめ🙌"></textarea>
+      </div>
+      <div class="sachi-field">
+        <label>✨ 今回の『さち』</label>
+        <textarea id="sachi" placeholder="今回の幸せポイントを書いてみよう！例：お通しの小鉢が全部美味しくてすでに幸せだった🥹"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- APIトークン設定 -->
+  <div class="token-section">
+    <div class="section-header" onclick="toggleSection('sec-token')" style="cursor:pointer;">
+      <span class="section-icon">🔑</span>
+      <span class="section-title">Notion API設定</span>
+      <span class="section-toggle" id="token-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec-token-body">
+      <div class="field">
+        <label>APIトークン（ntn_ または secret_ で始まる文字列）</label>
+        <div class="token-input-wrap">
+          <input type="password" id="notion-token" placeholder="ntn_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+          <button class="token-save-btn" onclick="saveToken()">保存</button>
+        </div>
+        <div class="token-status">
+          <div class="token-dot" id="token-dot"></div>
+          <span id="token-status-text">トークン未設定</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- アクション -->
+  <div class="action-bar">
+    <button class="btn btn-secondary" onclick="resetForm()">🗑 リセット</button>
+    <button class="btn btn-primary" id="save-btn" onclick="saveToNotion()">📬 Notionに保存する</button>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- 送信中オーバーレイ -->
+<div class="sending-overlay" id="sending-overlay">
+  <div class="sending-box">
+    <div class="sending-spinner"></div>
+    <div class="sending-text">Notionに保存中…</div>
+  </div>
+</div>
+
+<!-- 完了モーダル -->
+<div class="modal" id="success-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">✅ 保存完了！</span>
+      <button class="modal-close" onclick="closeModal('success-modal')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center; padding: 32px 20px;">
+      <div style="font-size:3rem; margin-bottom:12px;">🎉</div>
+      <div style="font-family:'Noto Serif JP',serif; font-size:1rem; margin-bottom:8px;" id="success-shop-name"></div>
+      <div style="font-size:0.82rem; color:var(--smoke);">Notionのデータベースに保存されました</div>
+      <a id="notion-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:6px; margin-top:18px; background:var(--ink); color:var(--cream); padding:10px 20px; border-radius:10px; font-size:0.83rem; text-decoration:none; font-family:'Noto Sans JP',sans-serif;">
+        Notionで確認する →
+      </a>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="resetAndClose()" style="flex:1">✏️ 次のお店を記録する</button>
+    </div>
+  </div>
+</div>
+
+<!-- トースト -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const DATABASE_ID = '31d7937d636c80428d72fd07be271882';
+
+  // トークン管理（sessionStorage使用）
+  let notionToken = sessionStorage.getItem('notion_token') || '';
+
+  function saveToken() {
+    const val = document.getElementById('notion-token').value.trim();
+    if (!val.startsWith('ntn_') && !val.startsWith('secret_')) {
+      showToast('⚠️ トークンの形式が正しくありません', 'error');
+      return;
+    }
+    notionToken = val;
+    sessionStorage.setItem('notion_token', val);
+    document.getElementById('notion-token').value = '';
+    updateTokenStatus(true);
+    showToast('🔑 トークンを保存しました', 'success');
+  }
+
+  function updateTokenStatus(isSet) {
+    const dot = document.getElementById('token-dot');
+    const text = document.getElementById('token-status-text');
+    if (isSet) {
+      dot.className = 'token-dot set';
+      text.textContent = 'トークン設定済み ✓';
+    } else {
+      dot.className = 'token-dot';
+      text.textContent = 'トークン未設定';
+    }
+  }
+
+  // 初期状態
+  if (notionToken) updateTokenStatus(true);
+
+  // セクション折り畳み
+  function toggleSection(id) {
+    const body = document.getElementById(id + '-body') || document.getElementById(id)?.querySelector('.section-body');
+    const toggle = document.getElementById(id + '-toggle') || document.querySelector(`#${id} .section-toggle`);
+    if (body) {
+      const isCollapsed = body.style.maxHeight === '0px';
+      body.style.maxHeight = isCollapsed ? '2000px' : '0px';
+      body.style.opacity = isCollapsed ? '1' : '0';
+      body.style.paddingTop = isCollapsed ? '' : '0';
+      body.style.paddingBottom = isCollapsed ? '' : '0';
+    }
+    document.getElementById(id)?.classList.toggle('collapsed');
+  }
+
+  // 初期料理行
+  let dishCount = 0;
+  function addDish() {
+    dishCount++;
+    const id = `dish-${dishCount}`;
+    const item = document.createElement('div');
+    item.className = 'dish-item';
+    item.id = id;
+    item.innerHTML = `
+      <input type="text" placeholder="料理名" class="dish-name" />
+      <input type="number" placeholder="¥" class="dish-price price-input" />
+      <input type="text" placeholder="感想" class="dish-memo" />
+      <button class="dish-remove" onclick="removeDish('${id}')" title="削除">×</button>
+    `;
+    document.getElementById('dish-list').appendChild(item);
+    item.querySelector('.dish-name').focus();
+  }
+
+  function removeDish(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  }
+
+  addDish(); addDish(); addDish();
+
+  // 1人あたり自動計算
+  function calcPerPerson() {
+    const total = parseInt(document.getElementById('total-price').value) || 0;
+    const persons = parseInt(document.getElementById('persons').value) || 1;
+    if (total > 0) {
+      const per = Math.round(total / persons);
+      document.getElementById('per-person').value = `¥${per.toLocaleString()}`;
+    } else {
+      document.getElementById('per-person').value = '';
+    }
+  }
+
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+
+  function getChecked(groupId) {
+    const checks = document.querySelectorAll(`#${groupId} input:checked`);
+    return [...checks].map(c => c.value).join('・');
+  }
+
+  // Notionに保存
+  async function saveToNotion() {
+    if (!notionToken) {
+      showToast('⚠️ 先にAPIトークンを設定してください', 'error');
+      return;
+    }
+
+    const shopName = document.getElementById('shop-name').value.trim();
+    if (!shopName) {
+      showToast('⚠️ 店名を入力してください', 'error');
+      return;
+    }
+
+    const area = document.getElementById('area').value.trim();
+    const visitDate = document.getElementById('visit-date').value;
+    const mapUrl = document.getElementById('map-url').value.trim();
+    const reservation = getRadio('reservation');
+    const waitTime = document.getElementById('wait-time').value.trim();
+    const seats = getChecked('seat-types');
+    const timelimit = getRadio('timelimit');
+    const crowd = getRadio('crowd');
+    const scenes = getChecked('scene-types');
+    const total = parseInt(document.getElementById('total-price').value) || 0;
+    const starsEl = document.querySelector('input[name="stars"]:checked');
+    const stars = starsEl ? parseInt(starsEl.value) : 0;
+    const summary = document.getElementById('summary').value.trim();
+    const sachi = document.getElementById('sachi').value.trim();
+
+    // 料理メモをテキストで組み立て
+    const dishLines = [...document.querySelectorAll('.dish-item')].map(item => {
+      const name = item.querySelector('.dish-name').value;
+      const price = item.querySelector('.dish-price').value;
+      const memo = item.querySelector('.dish-memo').value;
+      if (!name) return null;
+      const priceStr = price ? `¥${parseInt(price).toLocaleString()}` : '';
+      return `・${name}${priceStr ? '　' + priceStr : ''}${memo ? '　→　' + memo : ''}`;
+    }).filter(Boolean);
+
+    // ページ本文（料理メモ＋雰囲気メモ）
+    const bodyText = [
+      '🍴 料理メモ',
+      ...dishLines,
+      '',
+      '🏮 雰囲気メモ',
+      seats ? `席の種類：${seats}` : '',
+      timelimit ? `時間制限：${timelimit}` : '',
+      crowd ? `混雑具合：${crowd}` : '',
+      scenes ? `おすすめシーン：${scenes}` : '',
+      reservation ? `予約：${reservation}` : '',
+      waitTime ? `待ち時間：${waitTime}` : '',
+      mapUrl ? `\n🗺️ Googleマップ：${mapUrl}` : '',
+    ].filter(l => l !== null && l !== undefined);
+
+    // Notion APIペイロード
+    const properties = {
+      '名前': { title: [{ text: { content: shopName } }] },
+    };
+
+    if (area) properties['エリア'] = { rich_text: [{ text: { content: area } }] };
+    if (visitDate) properties['訪問日'] = { date: { start: visitDate.slice(0, 10) } };
+    if (total) properties['合計金額'] = { number: total };
+    if (stars) properties['評価'] = { number: stars };
+    if (summary) properties['一言まとめ'] = { rich_text: [{ text: { content: summary } }] };
+    if (sachi) properties["今回の『さち'"] = { rich_text: [{ text: { content: sachi } }] };
+    properties['ステータス'] = { select: { name: 'メモ済' } };
+
+    // 本文ブロック
+    const children = bodyText
+      .filter(line => line.trim() !== '' || line === '')
+      .map(line => ({
+        object: 'block',
+        type: 'paragraph',
+        paragraph: {
+          rich_text: line ? [{ type: 'text', text: { content: line } }] : []
+        }
+      }));
+
+    const payload = {
+      parent: { database_id: DATABASE_ID },
+      properties,
+      children: children.slice(0, 100)
+    };
+
+    // 送信
+    document.getElementById('sending-overlay').classList.add('show');
+    document.getElementById('save-btn').disabled = true;
+
+    try {
+      const res = await fetch('https://api.notion.com/v1/pages', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${notionToken}`,
+          'Content-Type': 'application/json',
+          'Notion-Version': '2022-06-28'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        document.getElementById('sending-overlay').classList.remove('show');
+        document.getElementById('success-shop-name').textContent = `「${shopName}」を保存しました 🍽️`;
+        const pageUrl = data.url || 'https://notion.so';
+        document.getElementById('notion-link').href = pageUrl;
+        document.getElementById('success-modal').classList.add('open');
+      } else {
+        throw new Error(data.message || 'APIエラー');
+      }
+    } catch (err) {
+      document.getElementById('sending-overlay').classList.remove('show');
+      showToast(`❌ 保存失敗：${err.message}`, 'error');
+    } finally {
+      document.getElementById('save-btn').disabled = false;
+    }
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  function resetAndClose() {
+    closeModal('success-modal');
+    resetForm();
+  }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function resetForm() {
+    if (!confirm('入力内容をリセットしますか？')) return;
+    document.querySelectorAll('input[type="text"], input[type="number"], input[type="url"], input[type="datetime-local"], textarea').forEach(el => {
+      if (!el.readOnly && el.id !== 'notion-token') el.value = '';
+    });
+    document.getElementById('per-person').value = '';
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+    document.querySelector('input[name="reservation"][value="なし"]').checked = true;
+    document.querySelector('input[name="timelimit"][value="なし"]').checked = true;
+    document.getElementById('persons').value = 2;
+    document.getElementById('dish-list').innerHTML = '';
+    dishCount = 0;
+    addDish(); addDish(); addDish();
+  }
+
+  // モーダル外クリックで閉じる
+  document.getElementById('success-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal('success-modal');
+  });
+</script>
+</body>
+</html>
