@@ -806,6 +806,7 @@
     if (stars) properties['評価'] = { number: stars };
     if (summary) properties['一言まとめ'] = { rich_text: [{ text: { content: summary } }] };
     if (sachi) properties["今回の『さち』"] = { rich_text: [{ text: { content: sachi } }] };
+    if (dishLines.length > 0) properties['料理メモ'] = { rich_text: [{ text: { content: dishLines.join('\n') } }] };
     properties['ステータス'] = { select: { name: 'メモ済' } };
 
     var children = [];
